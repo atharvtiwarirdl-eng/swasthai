@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
+import { AuthShell } from "../components/layout/AuthShell";
 import { Button } from "../components/ui/Button";
-import { Input } from "../components/ui/Input";
+import { Field } from "../components/ui/Field";
 import { useToast } from "../components/ui/Toast";
 
 export function LoginPage() {
@@ -8,30 +9,40 @@ export function LoginPage() {
   const { pushToast } = useToast();
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-md items-center px-4">
+    <AuthShell
+      eyebrow="SwasthAI Access"
+      title="Patient Login"
+      subtitle="Authentication is simulated for Phase 1."
+      footer={
+        <>
+          New to SwasthAI?{" "}
+          <Link className="text-[var(--accent)] hover:underline" to="/register">
+            Register
+          </Link>
+        </>
+      }
+    >
       <form
-        className="surface-strong w-full rounded-3xl p-7"
+        className="space-y-4"
         onSubmit={(event) => {
           event.preventDefault();
           pushToast("Demo login", "Signed in with synthetic patient account.");
           navigate("/dashboard");
         }}
       >
-        <p className="text-xs uppercase tracking-[0.26em] text-[var(--text-1)]">SwasthAI Access</p>
-        <h1 className="mt-2 text-3xl font-semibold">Patient Login</h1>
-        <p className="mt-2 text-sm text-[var(--text-1)]">Authentication is simulated for Phase 1.</p>
-        <div className="mt-6 space-y-4">
-          <Input placeholder="Email" type="email" required />
-          <Input placeholder="Password" type="password" required />
-          <Button className="w-full">Continue</Button>
-        </div>
-        <p className="mt-5 text-sm text-[var(--text-1)]">
-          New to SwasthAI?{" "}
-          <Link className="text-[var(--accent)]" to="/register">
-            Register
-          </Link>
-        </p>
+        <Field id="login-email" label="Email" placeholder="you@domain.com" type="email" required autoComplete="email" />
+        <Field
+          id="login-password"
+          label="Password"
+          placeholder="Enter password"
+          type="password"
+          required
+          autoComplete="current-password"
+        />
+        <Button className="w-full" type="submit">
+          Continue
+        </Button>
       </form>
-    </div>
+    </AuthShell>
   );
 }

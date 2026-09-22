@@ -1,5 +1,5 @@
-import { createContext, useCallback, useContext, useMemo, useState, type PropsWithChildren } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { createContext, useCallback, useContext, useMemo, useRef, useState, type PropsWithChildren } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 type ToastEntry = {
   id: number;
@@ -15,9 +15,12 @@ const ToastContext = createContext<ToastContextValue | null>(null);
 
 export function ToastProvider({ children }: PropsWithChildren) {
   const [toasts, setToasts] = useState<ToastEntry[]>([]);
+  const idRef = useRef(0);
+  const reduceMotion = useReducedMotion();
 
   const pushToast = useCallback((title: string, message: string) => {
-    const id = Date.now();
+    idRef.current += 1;
+    const id = idRef.current;
     setToasts((prev) => [...prev, { id, title, message }]);
     window.setTimeout(() => {
       setToasts((prev) => prev.filter((toast) => toast.id !== id));
@@ -29,15 +32,19 @@ export function ToastProvider({ children }: PropsWithChildren) {
   return (
     <ToastContext.Provider value={value}>
       {children}
-      <div className="fixed bottom-4 right-4 z-[70] flex w-full max-w-sm flex-col gap-2">
+      <div
+        className="fixed bottom-4 right-4 left-4 z-[70] ml-auto flex w-auto max-w-sm flex-col gap-2"
+        aria-live="polite"
+        aria-atomic="true"
+      >
         <AnimatePresence>
           {toasts.map((toast) => (
             <motion.div
               key={toast.id}
               className="surface-strong rounded-xl p-3"
-              initial={{ opacity: 0, y: 12 }}
+              initial={reduceMotion ? false : { opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 12 }}
+              exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 12 }}
             >
               <p className="text-sm font-semibold">{toast.title}</p>
               <p className="mt-0.5 text-xs text-[var(--text-1)]">{toast.message}</p>

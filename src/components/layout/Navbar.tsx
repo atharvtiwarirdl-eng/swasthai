@@ -3,15 +3,19 @@ import { Button } from "../ui/Button";
 type NavbarProps = {
   onOpenNotifications: () => void;
   onOpenNav: () => void;
+  pageTitle: string;
+  pageSubtitle: string;
+  unreadCount: number;
 };
 
-export function Navbar({ onOpenNotifications, onOpenNav }: NavbarProps) {
+export function Navbar({ onOpenNotifications, onOpenNav, pageTitle, pageSubtitle, unreadCount }: NavbarProps) {
   return (
     <header className="surface sticky top-0 z-20 border-x-0 border-t-0 px-4 py-3 md:px-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <button
-            className="rounded-lg p-2 text-[var(--text-1)] md:hidden"
+            type="button"
+            className="rounded-lg p-2 text-[var(--text-1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] md:hidden"
             onClick={onOpenNav}
             aria-label="Open navigation"
           >
@@ -19,9 +23,10 @@ export function Navbar({ onOpenNotifications, onOpenNav }: NavbarProps) {
               <path d="M4 7h16M4 12h16M4 17h16" />
             </svg>
           </button>
-          <div>
+          <div className="min-w-0">
             <p className="text-xs uppercase tracking-[0.28em] text-[var(--text-1)]">SwasthAI</p>
-            <h1 className="text-lg font-semibold">Patient Intelligence</h1>
+            <h1 className="truncate text-lg font-semibold">{pageTitle}</h1>
+            <p className="hidden text-xs text-[var(--text-2)] sm:block">{pageSubtitle}</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -30,9 +35,11 @@ export function Navbar({ onOpenNotifications, onOpenNav }: NavbarProps) {
               <path d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5" />
               <path d="M9.5 20a2.5 2.5 0 0 0 5 0" />
             </svg>
-            Alerts
+            Alerts {unreadCount > 0 ? `(${unreadCount})` : ""}
           </Button>
-          <div className="h-9 w-9 rounded-full bg-[linear-gradient(145deg,var(--accent-2),var(--accent))]" />
+          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[linear-gradient(145deg,var(--accent-2),var(--accent))] text-xs font-semibold text-slate-900">
+            SP
+          </div>
         </div>
       </div>
     </header>

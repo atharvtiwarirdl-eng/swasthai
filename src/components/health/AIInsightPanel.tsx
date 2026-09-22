@@ -11,7 +11,7 @@ export function AIInsightPanel({ insights }: AIInsightPanelProps) {
       <p className="mt-1 text-sm text-[var(--text-1)]">Pattern summaries generated from synthetic events.</p>
       <div className="mt-4 space-y-4">
         {insights.map((insight) => (
-          <article key={insight.id} className="rounded-xl border border-[var(--line-soft)] p-3">
+          <article key={insight.id} className="border-l-2 border-[var(--accent-2)] pl-3">
             <p className="font-medium">{insight.headline}</p>
             <p className="mt-1 text-sm text-[var(--text-1)]">{insight.detail}</p>
             <p className="mt-2 text-xs uppercase tracking-[0.14em] text-[var(--accent)]">Confidence {insight.confidence}%</p>

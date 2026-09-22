@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
+import { AuthShell } from "../components/layout/AuthShell";
 import { Button } from "../components/ui/Button";
-import { Input } from "../components/ui/Input";
+import { Field } from "../components/ui/Field";
 import { useToast } from "../components/ui/Toast";
 
 export function RegisterPage() {
@@ -8,30 +9,41 @@ export function RegisterPage() {
   const { pushToast } = useToast();
 
   return (
-    <div className="mx-auto flex min-h-screen w-full max-w-md items-center px-4">
+    <AuthShell
+      eyebrow="SwasthAI Enrollment"
+      title="Create Account"
+      subtitle="Create a synthetic patient profile for Phase 1 experience testing."
+      footer={
+        <>
+          Already registered?{" "}
+          <Link className="text-[var(--accent)] hover:underline" to="/login">
+            Login
+          </Link>
+        </>
+      }
+    >
       <form
-        className="surface-strong w-full rounded-3xl p-7"
+        className="space-y-4"
         onSubmit={(event) => {
           event.preventDefault();
           pushToast("Demo registration", "Patient profile created with synthetic data.");
           navigate("/dashboard");
         }}
       >
-        <p className="text-xs uppercase tracking-[0.26em] text-[var(--text-1)]">SwasthAI Enrollment</p>
-        <h1 className="mt-2 text-3xl font-semibold">Create Account</h1>
-        <div className="mt-6 space-y-4">
-          <Input placeholder="Full name" required />
-          <Input placeholder="Email" type="email" required />
-          <Input placeholder="Password" type="password" required />
-          <Button className="w-full">Register</Button>
-        </div>
-        <p className="mt-5 text-sm text-[var(--text-1)]">
-          Already registered?{" "}
-          <Link className="text-[var(--accent)]" to="/login">
-            Login
-          </Link>
-        </p>
+        <Field id="register-name" label="Full Name" placeholder="Patient name" required autoComplete="name" />
+        <Field id="register-email" label="Email" placeholder="you@domain.com" type="email" required autoComplete="email" />
+        <Field
+          id="register-password"
+          label="Password"
+          placeholder="Create password"
+          type="password"
+          required
+          autoComplete="new-password"
+        />
+        <Button className="w-full" type="submit">
+          Register
+        </Button>
       </form>
-    </div>
+    </AuthShell>
   );
 }

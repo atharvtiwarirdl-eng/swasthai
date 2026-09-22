@@ -34,7 +34,7 @@ export function ReportTable({ reports }: ReportTableProps) {
                         : "bg-[rgba(255,209,115,0.2)] text-[var(--warn)]"
                     }`}
                   >
-                    {report.status}
+                    {report.status === "normal" ? "Normal" : "Needs Review"}
                   </span>
                 </td>
               </tr>

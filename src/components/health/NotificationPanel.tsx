@@ -10,6 +10,12 @@ const priorityColor: Record<NotificationItem["priority"], string> = {
   high: "text-[var(--danger)]",
 };
 
+const priorityLabel: Record<NotificationItem["priority"], string> = {
+  low: "Low",
+  medium: "Medium",
+  high: "High",
+};
+
 export function NotificationPanel({ notifications }: NotificationPanelProps) {
   return (
     <div className="space-y-3">
@@ -17,8 +23,13 @@ export function NotificationPanel({ notifications }: NotificationPanelProps) {
         <article key={item.id} className="rounded-xl border border-[var(--line-soft)] p-3">
           <div className="flex items-center justify-between gap-3">
             <p className="font-medium">{item.title}</p>
-            <p className={`text-xs uppercase tracking-[0.14em] ${priorityColor[item.priority]}`}>{item.priority}</p>
+            <p className={`text-xs uppercase tracking-[0.14em] ${priorityColor[item.priority]}`}>
+              Priority {priorityLabel[item.priority]}
+            </p>
           </div>
+          <p className="mt-0.5 text-xs uppercase tracking-[0.12em] text-[var(--text-2)]">
+            {item.type ?? "notification"} · {item.read ? "read" : "unread"}
+          </p>
           <p className="mt-1 text-sm text-[var(--text-1)]">{item.message}</p>
           <p className="mt-2 text-xs text-[var(--text-1)]">{item.time}</p>
         </article>

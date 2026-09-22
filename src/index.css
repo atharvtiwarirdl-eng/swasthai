@@ -5,11 +5,15 @@
   --bg-0: #060a16;
   --bg-1: #0a1226;
   --bg-2: #111c37;
+  --bg-3: #192746;
   --surface: rgba(13, 23, 46, 0.72);
   --surface-strong: rgba(17, 30, 58, 0.88);
+  --surface-soft: rgba(21, 35, 66, 0.48);
   --line-soft: rgba(142, 165, 214, 0.24);
+  --line-strong: rgba(173, 196, 238, 0.4);
   --text-0: #edf4ff;
   --text-1: #a9b9dc;
+  --text-2: #8d9ec5;
   --accent: #63d7e8;
   --accent-2: #8c7dff;
   --ok: #44d6a6;
@@ -31,10 +35,13 @@ body {
     radial-gradient(900px 700px at 94% 0%, rgba(140, 125, 255, 0.18), transparent 60%),
     linear-gradient(160deg, var(--bg-0), var(--bg-1) 42%, var(--bg-2));
   background-attachment: fixed;
+  line-height: 1.45;
+  overflow-x: hidden;
 }
 
 #root {
   min-height: 100vh;
+  overflow-x: clip;
 }
 
 h1,
@@ -44,6 +51,15 @@ h4,
 h5,
 h6 {
   font-family: "Space Grotesk", sans-serif;
+  letter-spacing: -0.02em;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: rgba(99, 215, 232, 0.35);
 }
 
 .surface {
@@ -61,6 +77,11 @@ h6 {
   color: var(--text-1);
 }
 
+.surface-soft {
+  background: var(--surface-soft);
+  border: 1px solid rgba(142, 165, 214, 0.2);
+}
+
 .constellation-grid {
   background-image:
     linear-gradient(rgba(148, 173, 232, 0.08) 1px, transparent 1px),
@@ -70,4 +91,24 @@ h6 {
 
 .timeline-fade {
   mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+
+.focus-ring {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.focus-ring:focus-visible {
+  outline-color: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

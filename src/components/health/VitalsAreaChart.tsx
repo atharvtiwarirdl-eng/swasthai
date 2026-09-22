@@ -2,6 +2,7 @@ import {
   Area,
   AreaChart,
   CartesianGrid,
+  Line,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -35,6 +36,7 @@ export function VitalsAreaChart({ data }: VitalsAreaChartProps) {
             <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fill: "#93a4c7", fontSize: 12 }} />
             <YAxis axisLine={false} tickLine={false} tick={{ fill: "#93a4c7", fontSize: 12 }} />
             <Tooltip
+              labelStyle={{ color: "#c9d7f4", fontSize: 12 }}
               contentStyle={{
                 background: "rgba(11,20,40,0.96)",
                 border: "1px solid rgba(165,185,231,0.35)",
@@ -43,9 +45,11 @@ export function VitalsAreaChart({ data }: VitalsAreaChartProps) {
             />
             <Area type="monotone" dataKey="heartRate" stroke="#63d7e8" fill="url(#heart)" strokeWidth={2} />
             <Area type="monotone" dataKey="stress" stroke="#ff7f96" fill="url(#stress)" strokeWidth={1.5} />
+            <Line type="monotone" dataKey="sleepHours" stroke="#8c7dff" strokeWidth={1.6} dot={false} />
           </AreaChart>
         </ResponsiveContainer>
       </div>
+      <p className="mt-2 text-xs text-[var(--text-2)]">Lines: heart-rate, stress, sleep-hours (synthetic demo).</p>
     </div>
   );
 }
