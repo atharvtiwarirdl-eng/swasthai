@@ -1,0 +1,73 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap");
+@import "tailwindcss";
+
+:root {
+  --bg-0: #060a16;
+  --bg-1: #0a1226;
+  --bg-2: #111c37;
+  --surface: rgba(13, 23, 46, 0.72);
+  --surface-strong: rgba(17, 30, 58, 0.88);
+  --line-soft: rgba(142, 165, 214, 0.24);
+  --text-0: #edf4ff;
+  --text-1: #a9b9dc;
+  --accent: #63d7e8;
+  --accent-2: #8c7dff;
+  --ok: #44d6a6;
+  --warn: #ffd173;
+  --danger: #ff7f96;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Inter", sans-serif;
+  color: var(--text-0);
+  background:
+    radial-gradient(1200px 800px at 6% -5%, rgba(99, 215, 232, 0.18), transparent 52%),
+    radial-gradient(900px 700px at 94% 0%, rgba(140, 125, 255, 0.18), transparent 60%),
+    linear-gradient(160deg, var(--bg-0), var(--bg-1) 42%, var(--bg-2));
+  background-attachment: fixed;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.surface {
+  background: var(--surface);
+  border: 1px solid var(--line-soft);
+  backdrop-filter: blur(8px);
+}
+
+.surface-strong {
+  background: var(--surface-strong);
+  border: 1px solid rgba(160, 182, 232, 0.27);
+}
+
+.text-dim {
+  color: var(--text-1);
+}
+
+.constellation-grid {
+  background-image:
+    linear-gradient(rgba(148, 173, 232, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 173, 232, 0.08) 1px, transparent 1px);
+  background-size: 34px 34px;
+}
+
+.timeline-fade {
+  mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%);
+}
