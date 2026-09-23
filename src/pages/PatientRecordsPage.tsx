@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+
 import { Button } from "../components/ui/Button";
 import { Field } from "../components/ui/Field";
 import { useToast } from "../components/ui/Toast";
@@ -77,9 +78,7 @@ const patientRecords: PatientRecord[] = [
       temperature: "98.1°F",
       oxygen: "99%",
     },
-    medications: [
-      "Medication C — As prescribed",
-    ],
+    medications: ["Medication C — As prescribed"],
     reports: [
       "Complete Blood Count — 21 Sep 2026",
       "Thyroid Profile — 19 Sep 2026",
@@ -87,9 +86,7 @@ const patientRecords: PatientRecord[] = [
     appointments: [
       "21 Sep 2026 — General Medicine — Completed",
     ],
-    followUps: [
-      "Routine follow-up as advised",
-    ],
+    followUps: ["Routine follow-up as advised"],
   },
   {
     enrollment: "SW-2026-00126",
@@ -125,10 +122,12 @@ const patientRecords: PatientRecord[] = [
 ];
 
 export function PatientRecordsPage() {
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const { pushToast } = useToast();
 
   const initialEnrollment = searchParams.get("enrollment") ?? "";
+
   const [enrollmentNumber, setEnrollmentNumber] =
     useState(initialEnrollment);
 
@@ -176,10 +175,12 @@ export function PatientRecordsPage() {
 
     if (!patient) {
       setSelectedPatient(null);
+
       pushToast(
         "Patient not found",
         "No synthetic patient record matches that enrollment number.",
       );
+
       return;
     }
 
@@ -191,9 +192,23 @@ export function PatientRecordsPage() {
     );
   };
 
+  const handleStartConsultation = () => {
+    if (!selectedPatient) {
+      return;
+    }
+
+    navigate(
+      `/consultation?enrollment=${encodeURIComponent(
+        selectedPatient.enrollment,
+      )}`,
+    );
+  };
+
   return (
     <div className="space-y-6">
-      {/* Header */}
+      {/* =========================================================
+          HEADER / SEARCH
+      ========================================================== */}
       <section className="surface-strong rounded-3xl p-5 md:p-7">
         <p className="text-xs uppercase tracking-[0.22em] text-[var(--accent)]">
           Clinical Workspace
@@ -219,7 +234,7 @@ export function PatientRecordsPage() {
           ) : null}
         </div>
 
-        {/* Search */}
+        {/* Search Form */}
         <form
           className="mt-7 flex flex-col gap-3 md:flex-row md:items-end"
           onSubmit={handleSearch}
@@ -242,11 +257,13 @@ export function PatientRecordsPage() {
         </form>
 
         <p className="mt-3 text-xs text-[var(--text-2)]">
-          Demo records: SW-2026-00124 · SW-2026-00125 ·
-          SW-2026-00126
+          Demo records: SW-2026-00124 · SW-2026-00125 · SW-2026-00126
         </p>
       </section>
 
+      {/* =========================================================
+          EMPTY STATE
+      ========================================================== */}
       {!selectedPatient ? (
         <section className="surface rounded-2xl p-8 text-center">
           <p className="text-sm font-medium">
@@ -260,7 +277,9 @@ export function PatientRecordsPage() {
         </section>
       ) : (
         <>
-          {/* Patient Identity */}
+          {/* =====================================================
+              PATIENT IDENTITY
+          ====================================================== */}
           <section className="surface rounded-2xl p-5 md:p-6">
             <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
               <div>
@@ -277,22 +296,34 @@ export function PatientRecordsPage() {
                 </p>
               </div>
 
-              <div className="rounded-xl border border-[var(--line-soft)] px-4 py-3">
-                <p className="text-xs text-[var(--text-2)]">
-                  Last Visit
-                </p>
+              {/* Last Visit + Consultation */}
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                <div className="rounded-xl border border-[var(--line-soft)] px-4 py-3">
+                  <p className="text-xs text-[var(--text-2)]">
+                    Last Visit
+                  </p>
 
-                <p className="mt-1 text-sm font-semibold">
-                  {selectedPatient.lastVisit}
-                </p>
+                  <p className="mt-1 text-sm font-semibold">
+                    {selectedPatient.lastVisit}
+                  </p>
+                </div>
+
+                <Button
+                  type="button"
+                  onClick={handleStartConsultation}
+                >
+                  Start Consultation
+                </Button>
               </div>
             </div>
 
+            {/* Patient Basic Information */}
             <div className="mt-6 grid gap-px overflow-hidden rounded-xl bg-[var(--line-soft)] sm:grid-cols-2 lg:grid-cols-4">
               <div className="bg-[var(--surface)] p-4">
                 <p className="text-xs text-[var(--text-2)]">
                   Age
                 </p>
+
                 <p className="mt-1 font-medium">
                   {selectedPatient.age} years
                 </p>
@@ -302,6 +333,7 @@ export function PatientRecordsPage() {
                 <p className="text-xs text-[var(--text-2)]">
                   Gender
                 </p>
+
                 <p className="mt-1 font-medium">
                   {selectedPatient.gender}
                 </p>
@@ -311,6 +343,7 @@ export function PatientRecordsPage() {
                 <p className="text-xs text-[var(--text-2)]">
                   Blood Group
                 </p>
+
                 <p className="mt-1 font-medium">
                   {selectedPatient.bloodGroup}
                 </p>
@@ -320,6 +353,7 @@ export function PatientRecordsPage() {
                 <p className="text-xs text-[var(--text-2)]">
                   Contact
                 </p>
+
                 <p className="mt-1 font-medium">
                   {selectedPatient.phone}
                 </p>
@@ -327,8 +361,11 @@ export function PatientRecordsPage() {
             </div>
           </section>
 
-          {/* Current Clinical Context */}
-          <section className="grid gap-5 lg:grid-cols-[1fr_1fr]">
+          {/* =====================================================
+              CURRENT CLINICAL CONTEXT + VITALS
+          ====================================================== */}
+          <section className="grid gap-5 lg:grid-cols-2">
+            {/* Clinical Context */}
             <section className="surface rounded-2xl p-5">
               <p className="text-xs uppercase tracking-[0.16em] text-[var(--text-2)]">
                 Current Context
@@ -343,6 +380,7 @@ export function PatientRecordsPage() {
                   <p className="text-xs text-[var(--text-2)]">
                     Care type
                   </p>
+
                   <p className="mt-1 text-sm font-medium">
                     {selectedPatient.condition}
                   </p>
@@ -352,6 +390,7 @@ export function PatientRecordsPage() {
                   <p className="text-xs text-[var(--text-2)]">
                     Primary doctor
                   </p>
+
                   <p className="mt-1 text-sm font-medium">
                     {selectedPatient.doctor}
                   </p>
@@ -361,6 +400,7 @@ export function PatientRecordsPage() {
                   <p className="text-xs text-[var(--text-2)]">
                     Last consultation
                   </p>
+
                   <p className="mt-1 text-sm font-medium">
                     {selectedPatient.lastVisit}
                   </p>
@@ -368,7 +408,7 @@ export function PatientRecordsPage() {
               </div>
             </section>
 
-            {/* Vitals */}
+            {/* Latest Vitals */}
             <section className="surface rounded-2xl p-5">
               <p className="text-xs uppercase tracking-[0.16em] text-[var(--text-2)]">
                 Latest Vitals
@@ -383,6 +423,7 @@ export function PatientRecordsPage() {
                   <p className="text-xs text-[var(--text-2)]">
                     Blood Pressure
                   </p>
+
                   <p className="mt-1 font-semibold">
                     {selectedPatient.vitals.bloodPressure}
                   </p>
@@ -392,6 +433,7 @@ export function PatientRecordsPage() {
                   <p className="text-xs text-[var(--text-2)]">
                     Heart Rate
                   </p>
+
                   <p className="mt-1 font-semibold">
                     {selectedPatient.vitals.heartRate}
                   </p>
@@ -401,6 +443,7 @@ export function PatientRecordsPage() {
                   <p className="text-xs text-[var(--text-2)]">
                     Temperature
                   </p>
+
                   <p className="mt-1 font-semibold">
                     {selectedPatient.vitals.temperature}
                   </p>
@@ -410,6 +453,7 @@ export function PatientRecordsPage() {
                   <p className="text-xs text-[var(--text-2)]">
                     Oxygen Saturation
                   </p>
+
                   <p className="mt-1 font-semibold">
                     {selectedPatient.vitals.oxygen}
                   </p>
@@ -418,8 +462,11 @@ export function PatientRecordsPage() {
             </section>
           </section>
 
-          {/* Record Sections */}
+          {/* =====================================================
+              RECORD SECTIONS
+          ====================================================== */}
           <section className="grid gap-5 lg:grid-cols-2">
+            {/* Medications */}
             <section className="surface rounded-2xl p-5">
               <p className="text-xs uppercase tracking-[0.16em] text-[var(--text-2)]">
                 Medication History
@@ -430,19 +477,18 @@ export function PatientRecordsPage() {
               </h2>
 
               <div className="mt-5 space-y-3">
-                {selectedPatient.medications.map(
-                  (medication) => (
-                    <div
-                      key={medication}
-                      className="rounded-xl border border-[var(--line-soft)] p-4 text-sm"
-                    >
-                      {medication}
-                    </div>
-                  ),
-                )}
+                {selectedPatient.medications.map((medication) => (
+                  <div
+                    key={medication}
+                    className="rounded-xl border border-[var(--line-soft)] p-4 text-sm"
+                  >
+                    {medication}
+                  </div>
+                ))}
               </div>
             </section>
 
+            {/* Reports */}
             <section className="surface rounded-2xl p-5">
               <p className="text-xs uppercase tracking-[0.16em] text-[var(--text-2)]">
                 Medical Reports
@@ -464,6 +510,7 @@ export function PatientRecordsPage() {
               </div>
             </section>
 
+            {/* Appointments */}
             <section className="surface rounded-2xl p-5">
               <p className="text-xs uppercase tracking-[0.16em] text-[var(--text-2)]">
                 Appointments
@@ -487,6 +534,7 @@ export function PatientRecordsPage() {
               </div>
             </section>
 
+            {/* Follow Ups */}
             <section className="surface rounded-2xl p-5">
               <p className="text-xs uppercase tracking-[0.16em] text-[var(--text-2)]">
                 Follow-ups

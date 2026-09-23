@@ -187,3 +187,24 @@ export type NotificationItem = {
   read?: boolean;
   type?: string;
 };
+export type ConsultationRecord = {
+  id: string;
+  enrollment: string;
+  date: string;
+  time: string;
+  doctorName: string;
+
+  symptoms: string;
+  notes: string;
+  prescription: string;
+  followUp: string;
+
+  vitals: {
+    bloodPressure: string;
+    heartRate: string;
+    temperature: string;
+    oxygen: string;
+  };
+
+  status: "saved";
+};

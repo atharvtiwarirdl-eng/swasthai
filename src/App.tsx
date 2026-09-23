@@ -1,4 +1,3 @@
-
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import { AppShell } from "./components/layout/AppShell";
@@ -18,6 +17,7 @@ import { ProfilePage } from "./pages/ProfilePage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { ReportsPage } from "./pages/ReportsPage";
 import { TimelinePage } from "./pages/TimelinePage";
+import { ConsultationPage } from "./pages/ConsultationPage";
 
 export default function App() {
   return (
@@ -43,35 +43,48 @@ export default function App() {
               element={<PatientRecordsPage />}
             />
 
+            {/* Consultation Workspace */}
+            <Route
+              path="/consultation"
+              element={<ConsultationPage />}
+            />
+
             {/* Patient workspace */}
             <Route
               path="/dashboard"
               element={<DashboardPage />}
             />
+
             <Route
               path="/health"
               element={<HealthOverviewPage />}
             />
+
             <Route
               path="/timeline"
               element={<TimelinePage />}
             />
+
             <Route
               path="/reports"
               element={<ReportsPage />}
             />
+
             <Route
               path="/appointments"
               element={<AppointmentsPage />}
             />
+
             <Route
               path="/medications"
               element={<MedicationsPage />}
             />
+
             <Route
               path="/notifications"
               element={<NotificationsPage />}
             />
+
             <Route
               path="/profile"
               element={<ProfilePage />}

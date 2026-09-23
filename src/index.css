@@ -3,71 +3,151 @@
 
 :root {
   /* Swasthya — Clinical Editorial System */
+
+  /* Backgrounds */
   --bg-0: #f4f6f5;
   --bg-1: #eef1ef;
   --bg-2: #e7ebe9;
 
+  /* Surfaces */
   --surface: #ffffff;
   --surface-strong: #ffffff;
   --surface-soft: #f7f9f8;
 
+  /* Borders */
   --line-soft: #dfe5e2;
   --line-strong: #cbd4d0;
 
+  /* Text */
   --text-0: #17201d;
   --text-1: #53615c;
   --text-2: #7b8782;
 
+  /* Accent */
   --accent: #176b5d;
   --accent-dark: #0f5046;
   --accent-soft: #e2efeb;
 
+  /* Status */
   --ok: #26745d;
   --warn: #9a6b19;
   --danger: #a54848;
 
+  /* Shadows */
   --shadow-sm: 0 1px 2px rgba(20, 31, 27, 0.04);
   --shadow-md: 0 8px 24px rgba(20, 31, 27, 0.06);
   --shadow-lg: 0 18px 48px rgba(20, 31, 27, 0.08);
 
+  /* Radius */
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
 }
 
+/* --------------------------------------------------
+   DARK THEME
+   -------------------------------------------------- */
+
+:root[data-theme="dark"] {
+  /* Backgrounds */
+  --bg-0: #0b1110;
+  --bg-1: #101817;
+  --bg-2: #151e1c;
+
+  /* Surfaces */
+  --surface: #121a18;
+  --surface-strong: #18211f;
+  --surface-soft: #0f1715;
+
+  /* Borders */
+  --line-soft: #26332f;
+  --line-strong: #34423d;
+
+  /* Text */
+  --text-0: #edf4f1;
+  --text-1: #aebbb6;
+  --text-2: #7f8d88;
+
+  /* Accent */
+  --accent: #39a894;
+  --accent-dark: #287f70;
+  --accent-soft: #153d35;
+
+  /* Status */
+  --ok: #4fc49f;
+  --warn: #d6a94d;
+  --danger: #e06b6b;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.24);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.28);
+  --shadow-lg: 0 18px 48px rgba(0, 0, 0, 0.34);
+}
+
+/* --------------------------------------------------
+   GLOBAL RESET
+   -------------------------------------------------- */
+
 * {
   box-sizing: border-box;
 }
 
+/* --------------------------------------------------
+   HTML
+   -------------------------------------------------- */
+
 html {
   background: var(--bg-0);
+  color-scheme: light;
   scroll-behavior: smooth;
 }
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+/* --------------------------------------------------
+   BODY
+   -------------------------------------------------- */
 
 body {
   margin: 0;
   min-height: 100vh;
+
   font-family: "DM Sans", sans-serif;
   color: var(--text-0);
 
   background:
     linear-gradient(
       180deg,
-      #f7f9f8 0%,
+      var(--bg-1) 0%,
       var(--bg-0) 48%,
-      #edf1ef 100%
+      var(--bg-2) 100%
     );
 
   line-height: 1.5;
   overflow-x: hidden;
+
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+
+  transition:
+    background-color 180ms ease,
+    color 180ms ease;
 }
+
+/* --------------------------------------------------
+   ROOT
+   -------------------------------------------------- */
 
 #root {
   min-height: 100vh;
   overflow-x: clip;
 }
+
+/* --------------------------------------------------
+   HEADINGS
+   -------------------------------------------------- */
 
 h1,
 h2,
@@ -76,20 +156,34 @@ h4,
 h5,
 h6 {
   margin-top: 0;
+
   font-family: "Manrope", sans-serif;
   font-weight: 700;
   letter-spacing: -0.025em;
+
   color: var(--text-0);
 }
+
+/* --------------------------------------------------
+   PARAGRAPHS
+   -------------------------------------------------- */
 
 p {
   margin-top: 0;
 }
 
+/* --------------------------------------------------
+   LINKS
+   -------------------------------------------------- */
+
 a {
   color: inherit;
   text-decoration: none;
 }
+
+/* --------------------------------------------------
+   FORM / BUTTON FONT
+   -------------------------------------------------- */
 
 button,
 input,
@@ -102,8 +196,12 @@ button {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* --------------------------------------------------
+   TEXT SELECTION
+   -------------------------------------------------- */
+
 ::selection {
-  background: rgba(23, 107, 93, 0.16);
+  background: var(--accent-soft);
   color: var(--text-0);
 }
 
@@ -146,10 +244,32 @@ button {
 
 .constellation-grid {
   background-image:
-    linear-gradient(rgba(23, 107, 93, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(23, 107, 93, 0.035) 1px, transparent 1px);
+    linear-gradient(
+      rgba(23, 107, 93, 0.035) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(23, 107, 93, 0.035) 1px,
+      transparent 1px
+    );
 
   background-size: 32px 32px;
+}
+
+/* Dark theme constellation grid */
+
+:root[data-theme="dark"] .constellation-grid {
+  background-image:
+    linear-gradient(
+      rgba(57, 168, 148, 0.055) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(57, 168, 148, 0.055) 1px,
+      transparent 1px
+    );
 }
 
 /*
@@ -188,7 +308,7 @@ button {
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #cbd4d0 transparent;
+  scrollbar-color: var(--line-strong) transparent;
 }
 
 *::-webkit-scrollbar {
@@ -201,12 +321,12 @@ button {
 }
 
 *::-webkit-scrollbar-thumb {
-  background: #cbd4d0;
+  background: var(--line-strong);
   border-radius: 20px;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background: #aebbb5;
+  background: var(--text-2);
 }
 
 /* --------------------------------------------------
@@ -217,19 +337,44 @@ input,
 textarea,
 select {
   color: var(--text-0);
-  background: #ffffff;
+  background: var(--surface);
   border-color: var(--line-soft);
 }
 
 input::placeholder,
 textarea::placeholder {
-  color: #98a39f;
+  color: var(--text-2);
 }
 
 input:focus,
 textarea:focus,
 select:focus {
   border-color: var(--accent);
+}
+
+/* --------------------------------------------------
+   SELECT OPTION SUPPORT
+   -------------------------------------------------- */
+
+select option {
+  color: var(--text-0);
+  background: var(--surface);
+}
+
+/* --------------------------------------------------
+   AUTOFILL
+   -------------------------------------------------- */
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill {
+  -webkit-text-fill-color: var(--text-0);
+  -webkit-box-shadow: 0 0 0 1000px var(--surface) inset;
+  transition: background-color 5000s ease-in-out 0s;
 }
 
 /* --------------------------------------------------
@@ -247,6 +392,24 @@ select {
     color 160ms ease,
     box-shadow 160ms ease,
     transform 160ms ease;
+}
+
+/* --------------------------------------------------
+   THEME TRANSITION
+   -------------------------------------------------- */
+
+body,
+.surface,
+.surface-strong,
+.surface-soft,
+input,
+textarea,
+select {
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    box-shadow 180ms ease;
 }
 
 /* --------------------------------------------------
